@@ -159,12 +159,12 @@ async function run() {
             res.send(user);
         });
 
-        // get events by search
+        // Get events by search
 
         app.get("/searched-events", async (req, res) => {
-      const search = req.query.search?.trim(); // remove spaces
+      const search = req.query.search?.trim(); 
 
-      // if search is empty, return empty array
+      
       if (!search) return res.send([]);
 
       try {
@@ -218,7 +218,7 @@ run().catch(console.dir);
 
 
 app.get('/', (req, res) => {
-    res.send("Server is Runninf")
+    res.send("Server is Running")
 })
 
 
