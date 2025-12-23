@@ -133,8 +133,8 @@ async function run() {
             res.send(users);
         });
 
-        app.get('/reviews', async(req,res) => {
-            const reviews  = await reviewsCollection.find().toArray();
+        app.get('/reviews', async (req, res) => {
+            const reviews = await reviewsCollection.find().toArray();
             res.send(reviews);
         })
 
@@ -162,22 +162,42 @@ async function run() {
         // Get events by search
 
         app.get("/searched-events", async (req, res) => {
-      const search = req.query.search?.trim(); 
+            const search = req.query.search?.trim();
 
-      
-      if (!search) return res.send([]);
 
-      try {
-        const events = await eventsCollection
-          .find({ title: { $regex: search, $options: "i" } }) 
-          .toArray();
+            if (!search) return res.send([]);
 
-        res.send(events);
-      } catch (err) {
-        console.error(err);
-        res.status(500).send({ message: "Failed to fetch events" });
-      }
-    });
+            try {
+                const events = await eventsCollection
+                    .find({ title: { $regex: search, $options: "i" } })
+                    .toArray();
+
+                res.send(events);
+            } catch (err) {
+                console.error(err);
+                res.status(500).send({ message: "Failed to fetch events" });
+            }
+        });
+
+        app.get("/users/:email", async (req, res) => {
+            const email = req.params.email;
+            const user = await usersCollection.findOne({ email });
+            res.send(user);
+        });
+
+        app.put("/users/:email", async (req, res) => {
+            const email = req.params.email;
+            const { name} = req.body;
+
+            const result = await usersCollection.updateOne(
+                { email },
+                { $set: { name } }
+            );
+
+            res.send(result);
+        });
+
+
 
 
 
